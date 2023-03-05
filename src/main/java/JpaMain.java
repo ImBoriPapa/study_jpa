@@ -3,9 +3,7 @@ import entity.Student;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.IntStream;
+
 
 @Slf4j
 public class JpaMain {
@@ -19,26 +17,18 @@ public class JpaMain {
         try {
             tx.begin();
 
-
-
             Student student1 = new Student("김학생");
-
-
-            Student student2 = new Student("이학생");
-
-
+            // 영속화
             em.persist(student1);
-            em.persist(student2);
 
+            Student student = em.find(Student.class, student1.getId());
+            log.info("영속 후 데이터베이스에 저장 전 캐시에 저장된 값 확인: cache contains student1={}", student != null);
 
-            List<Student> students = em.createQuery("select s from Student s", Student.class).getResultList();
-
-            students.forEach(s->log.info("student id= {}, name= {} ", s.getId(), s.getName()));
-
-
+            log.info("커밋 전");
             tx.commit();
+            log.info("커밋 완료");
         } catch (Exception e) {
-            log.info("ERROR= {}",e.getMessage());
+            log.info("ERROR= {}", e.getMessage());
             tx.rollback();
         } finally {
             em.close();

@@ -4,7 +4,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
+
+
 import javax.persistence.Id;
 import java.util.UUID;
 
@@ -13,11 +16,10 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Cacheable(true)
 public class Student {
-
     @Id
     private String id;
-
     private String name;
 
     public Student(String name) {
